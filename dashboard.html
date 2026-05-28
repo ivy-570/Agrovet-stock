@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agrovet Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --primary: #1b8f5a;
+            --primary-dark: #146843;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #222;
+            --muted: #777;
+            --danger: #e74c3c;
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
+
+        body { background: var(--bg); color: var(--text); }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            color: #e5e7eb;
+            padding: 25px 18px;
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #a5f3fc;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            color: #e5e7eb;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover { background: var(--sidebar-hover); }
+
+        /* MAIN */
+        .main { flex: 1; padding: 25px 30px; }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .topbar-title { font-size: 24px; font-weight: 600; }
+
+        .user-badge { font-size: 14px; color: var(--muted); }
+
+        /* CARDS */
+        .card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            margin-bottom: 22px;
+        }
+
+        .card-title { font-size: 18px; margin-bottom: 14px; font-weight: 600; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-box {
+            background: var(--card);
+            padding: 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-label { font-size: 13px; color: var(--muted); }
+
+        .stat-value { font-size: 24px; font-weight: 600; margin-top: 6px; }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary { background: #e5e7eb; color: #111827; }
+
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; display: flex; overflow-x: auto; }
+            .nav-link { display: inline-block; margin-right: 8px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Agrovet</h2>
+
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link">Products</a>
+        <a href="#" class="nav-link">Suppliers</a>
+        <a href="#" class="nav-link">Customers</a>
+        <a href="#" class="nav-link">Sales</a>
+        <a href="#" class="nav-link">Purchases</a>
+        <a href="#" class="nav-link">Stock History</a>
+        <a href="#" class="nav-link">Users</a>
+        <a href="#" class="nav-link">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <div class="topbar">
+            <div class="topbar-title">Dashboard</div>
+            <div class="user-badge">Logged in as Admin</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Overview</div>
+
+            <div class="grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Products</div>
+                    <div class="stat-value">120</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-label">Total Suppliers</div>
+                    <div class="stat-value">18</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-label">Total Customers</div>
+                    <div class="stat-value">54</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-label">Sales Today</div>
+                    <div class="stat-value">KES 12,500</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Quick Links</div>
+
+            <a href="#" class="btn btn-primary">Manage Products</a>
+            <a href="#" class="btn btn-primary">Record Sale</a>
+            <a href="#" class="btn btn-secondary">Record Purchase</a>
+            <a href="#" class="btn btn-secondary">View Stock History</a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

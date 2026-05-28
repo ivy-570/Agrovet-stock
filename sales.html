@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers – Agrovet System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --primary: #1b8f5a;
+            --primary-dark: #146843;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #222;
+            --muted: #777;
+            --danger: #e74c3c;
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
+
+        body { background: var(--bg); color: var(--text); }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            color: #e5e7eb;
+            padding: 25px 18px;
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #a5f3fc;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            color: #e5e7eb;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover { background: var(--sidebar-hover); }
+
+        /* MAIN */
+        .main { flex: 1; padding: 25px 30px; }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .topbar-title { font-size: 24px; font-weight: 600; }
+
+        .user-badge { font-size: 14px; color: var(--muted); }
+
+        /* CARDS */
+        .card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            margin-bottom: 22px;
+        }
+
+        .card-title { font-size: 18px; margin-bottom: 14px; font-weight: 600; }
+
+        /* FORM */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+            color: var(--muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+        }
+
+        .form-actions { margin-top: 14px; }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary { background: #e5e7eb; color: #111827; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-sm { padding: 6px 10px; font-size: 13px; }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th { background: #f9fafb; font-weight: 600; }
+
+        tr:hover { background: #f9fafb; }
+
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; display: flex; overflow-x: auto; }
+            .nav-link { display: inline-block; margin-right: 8px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Agrovet</h2>
+
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link">Products</a>
+        <a href="#" class="nav-link">Suppliers</a>
+        <a href="#" class="nav-link">Customers</a>
+        <a href="#" class="nav-link">Sales</a>
+        <a href="#" class="nav-link">Purchases</a>
+        <a href="#" class="nav-link">Stock History</a>
+        <a href="#" class="nav-link">Users</a>
+        <a href="#" class="nav-link">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <div class="topbar">
+            <div class="topbar-title">Customers</div>
+            <div class="user-badge">Logged in as Admin</div>
+        </div>
+
+        <!-- ADD CUSTOMER FORM -->
+        <div class="card">
+            <div class="card-title">Add Customer</div>
+
+            <form>
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" placeholder="e.g. John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" placeholder="e.g. 0712345678">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="e.g. johndoe@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" placeholder="e.g. Ruiru, Kiambu">
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">Save Customer</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- CUSTOMER LIST -->
+        <div class="card">
+            <div class="card-title">Customer List</div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>0712345678</td>
+                    <td>john@gmail.com</td>
+                    <td>Ruiru</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary">Edit</a>
+                        <a class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Mary Wanjiku</td>
+                    <td>0798765432</td>
+                    <td>mary@gmail.com</td>
+                    <td>Githurai</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary">Edit</a>
+                        <a class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
