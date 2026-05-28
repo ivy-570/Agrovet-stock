@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agrovet Stock System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --primary: #1b8f5a;
+            --primary-dark: #146843;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #222;
+            --muted: #777;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 34px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Agrovet Stock Management System</h1>
+    <p>Select a module to continue</p>
+
+    <div class="grid">
+
+        <div class="card">
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+
+        <div class="card">
+            <a href="products.html">Products</a>
+        </div>
+
+        <div class="card">
+            <a href="suppliers.html">Suppliers</a>
+        </div>
+
+        <div class="card">
+            <a href="customers.html">Customers</a>
+        </div>
+
+        <div class="card">
+            <a href="sales.html">Sales</a>
+        </div>
+
+        <div class="card">
+            <a href="purchases.html">Purchases</a>
+        </div>
+
+        <div class="card">
+            <a href="stock_history.html">Stock History</a>
+        </div>
+
+        <div class="card">
+            <a href="users.html">Users</a>
+        </div>
+
+        <div class="card">
+            <a href="login.html">Login</a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 Agrovet Stock System — Designed by Ivy
+    </div>
+</div>
+
+</body>
+</html>
