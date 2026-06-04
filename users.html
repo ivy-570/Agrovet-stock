@@ -24,7 +24,6 @@
 
         .layout { display: flex; min-height: 100vh; }
 
-        /* SIDEBAR */
         .sidebar {
             width: 240px;
             background: var(--sidebar-bg);
@@ -52,7 +51,6 @@
 
         .nav-link:hover { background: var(--sidebar-hover); }
 
-        /* MAIN */
         .main { flex: 1; padding: 25px 30px; }
 
         .topbar {
@@ -66,7 +64,6 @@
 
         .user-badge { font-size: 14px; color: var(--muted); }
 
-        /* CARDS */
         .card {
             background: var(--card);
             border-radius: 10px;
@@ -77,7 +74,6 @@
 
         .card-title { font-size: 18px; margin-bottom: 14px; font-weight: 600; }
 
-        /* FORM */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -102,7 +98,6 @@
 
         .form-actions { margin-top: 14px; }
 
-        /* BUTTONS */
         .btn {
             display: inline-block;
             padding: 9px 14px;
@@ -110,6 +105,7 @@
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
+            border: none;
         }
 
         .btn-primary { background: var(--primary); color: #fff; }
@@ -119,7 +115,6 @@
         .btn-danger { background: var(--danger); color: #fff; }
         .btn-sm { padding: 6px 10px; font-size: 13px; }
 
-        /* TABLE */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -135,69 +130,61 @@
         th { background: #f9fafb; font-weight: 600; }
 
         tr:hover { background: #f9fafb; }
-
-        @media (max-width: 768px) {
-            .layout { flex-direction: column; }
-            .sidebar { width: 100%; display: flex; overflow-x: auto; }
-            .nav-link { display: inline-block; margin-right: 8px; }
-        }
     </style>
 </head>
 
 <body>
 <div class="layout">
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <h2>Agrovet</h2>
 
-        <a href="#" class="nav-link">Dashboard</a>
-        <a href="#" class="nav-link">Products</a>
-        <a href="#" class="nav-link">Suppliers</a>
-        <a href="#" class="nav-link">Customers</a>
-        <a href="#" class="nav-link">Sales</a>
-        <a href="#" class="nav-link">Purchases</a>
-        <a href="#" class="nav-link">Stock History</a>
-        <a href="#" class="nav-link">Users</a>
-        <a href="#" class="nav-link">Logout</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="suppliers.html" class="nav-link">Suppliers</a>
+        <a href="customers.html" class="nav-link">Customers</a>
+        <a href="sales.html" class="nav-link">Sales</a>
+        <a href="purchases.html" class="nav-link">Purchases</a>
+        <a href="stock.html" class="nav-link">Stock History</a>
+        <a href="users.html" class="nav-link">Users</a>
+        <a href="login.html" class="nav-link">Logout</a>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main">
 
         <div class="topbar">
             <div class="topbar-title">Users</div>
-            <div class="user-badge">Logged in as Admin</div>
+            <div class="user-badge">Logged in as <b>Ivy (Admin)</b></div>
         </div>
 
         <!-- ADD USER FORM -->
         <div class="card">
             <div class="card-title">Add User</div>
 
-            <form>
+            <form id="userForm">
                 <div class="form-grid">
 
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" placeholder="e.g. Jane Doe">
+                        <input id="name" type="text" placeholder="e.g. Jane Doe">
                     </div>
 
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" placeholder="e.g. jane@gmail.com">
+                        <input id="email" type="email" placeholder="e.g. jane@gmail.com">
                     </div>
 
                     <div class="form-group">
                         <label>Role</label>
-                        <select>
-                            <option>admin</option>
-                            <option>staff</option>
+                        <select id="role">
+                            <option value="admin">admin</option>
+                            <option value="staff">staff</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Enter password">
+                        <input id="password" type="password" placeholder="Enter password">
                     </div>
 
                 </div>
@@ -224,35 +211,90 @@
                 </tr>
                 </thead>
 
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Admin User</td>
-                    <td>admin@agrovet.com</td>
-                    <td>admin</td>
-                    <td>2026-05-28</td>
-                    <td>
-                        <a class="btn btn-sm btn-secondary">Edit</a>
-                        <a class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>2</td>
-                    <td>Jane Doe</td>
-                    <td>jane@gmail.com</td>
-                    <td>staff</td>
-                    <td>2026-05-28</td>
-                    <td>
-                        <a class="btn btn-sm btn-secondary">Edit</a>
-                        <a class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-                </tbody>
+                <tbody id="userTable"></tbody>
             </table>
         </div>
 
     </div>
 </div>
+
+<script>
+    // Load users or create default Ivy admin
+    let users = JSON.parse(localStorage.getItem("agrovet_users")) || [];
+
+    if (users.length === 0) {
+        users.push({
+            id: 1,
+            name: "Ivy",
+            email: "ivy@agrovet.com",
+            role: "admin",
+            password: "admin123",
+            created: new Date().toISOString().split("T")[0]
+        });
+        localStorage.setItem("agrovet_users", JSON.stringify(users));
+    }
+
+    const userTable = document.getElementById("userTable");
+    const userForm = document.getElementById("userForm");
+
+    function renderUsers() {
+        userTable.innerHTML = "";
+        users.forEach(u => {
+            const row = `
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td>${u.role}</td>
+                    <td>${u.created}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.id})">Delete</button>
+                    </td>
+                </tr>
+            `;
+            userTable.innerHTML += row;
+        });
+    }
+
+    renderUsers();
+
+    userForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const role = document.getElementById("role").value;
+        const password = document.getElementById("password").value;
+
+        if (!name || !email || !password) {
+            alert("Fill all fields");
+            return;
+        }
+
+        const id = users.length ? users[users.length - 1].id + 1 : 1;
+
+        users.push({
+            id,
+            name,
+            email,
+            role,
+            password,
+            created: new Date().toISOString().split("T")[0]
+        });
+
+        localStorage.setItem("agrovet_users", JSON.stringify(users));
+        userForm.reset();
+        renderUsers();
+    });
+
+    function deleteUser(id) {
+        if (!confirm("Delete this user")) return;
+
+        users = users.filter(u => u.id !== id);
+        localStorage.setItem("agrovet_users", JSON.stringify(users));
+        renderUsers();
+    }
+</script>
+
 </body>
 </html>
