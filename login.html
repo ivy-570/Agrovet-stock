@@ -73,6 +73,15 @@
             text-decoration: none;
             font-weight: 600;
         }
+
+        .error, .success {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .error { color: #e11d48; }
+        .success { color: #16a34a; }
     </style>
 </head>
 
@@ -82,9 +91,11 @@
     <h2>Agrovet System</h2>
     <p>Login to continue</p>
 
-    <form>
-        <input type="email" placeholder="Email Address">
-        <input type="password" placeholder="Password">
+    <div id="message"></div>
+
+    <form id="loginForm">
+        <input id="email" type="email" placeholder="Email Address" required>
+        <input id="password" type="password" placeholder="Password" required>
 
         <button type="submit">Login</button>
     </form>
@@ -93,6 +104,47 @@
         Don't have an account? <a href="register.html">Register</a>
     </div>
 </div>
+
+<script>
+    const loginForm = document.getElementById("loginForm");
+    const messageDiv = document.getElementById("message");
+
+    loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+            showMessage("Please fill all fields", "error");
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem("agrovet_users") || "[]");
+
+        const user = users.find(u => u.email === email && u.password === password);
+
+        if (!user) {
+            showMessage("Invalid email or password", "error");
+            return;
+        }
+
+        // Save logged in user
+        localStorage.setItem("agrovet_logged_in", JSON.stringify(user));
+
+        showMessage("Login successful! Redirecting...", "success");
+
+        setTimeout(() => {
+            // Change this to your dashboard/products page
+            window.location.href = "products.html";
+        }, 1500);
+    });
+
+    function showMessage(text, type) {
+        messageDiv.className = type;
+        messageDiv.textContent = text;
+    }
+</script>
 
 </body>
 </html>
