@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agrovet AI Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Floating chat button */
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 999;
+            font-size: 26px;
+        }
+
+        /* Chat window */
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 340px;
+            max-height: 480px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.25);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 998;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .chat-header-sub {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .chat-close {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .chat-body {
+            padding: 10px 12px;
+            background: #f9fafb;
+            height: 320px;
+            overflow-y: auto;
+        }
+
+        .msg {
+            margin: 6px 0;
+            display: flex;
+        }
+
+        .msg.user {
+            justify-content: flex-end;
+        }
+
+        .msg.ai {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 8px 11px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .msg.user .bubble {
+            background: #2563eb;
+            color: #fff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg.ai .bubble {
+            background: #e5e7eb;
+            color: #111827;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-footer {
+            padding: 8px;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+            display: flex;
+            gap: 6px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 7px 9px;
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .chat-send {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .chat-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .typing {
+            font-size: 11px;
+            color: #6b7280;
+            padding: 0 12px 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating button -->
+<div class="chat-toggle" onclick="toggleChat()">
+    💬
+</div>
+
+<!-- Chat window -->
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <div>
+            <div class="chat-header-title">Agrovet AI Assistant</div>
+            <div class="chat-header-sub">Ask anything about using this system</div>
+        </div>
+        <div class="chat-close" onclick="toggleChat()">×</div>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="msg ai">
+            <div class="bubble">
+                Hi 👋, I’m your Agrovet assistant.<br>
+                You can ask things like:<br>
+                • How do I record a sale?<br>
+                • How do I add a new product?<br>
+                • How can I see low stock items?
+            </div>
+        </div>
+    </div>
+    <div class="typing" id="typingIndicator" style="display:none;">Assistant is typing…</div>
+    <div class="chat-footer">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type your question..." onkeydown="if(event.key==='Enter'){sendMessage();}">
+        <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleChat() {
+        const win = document.getElementById('chatWindow');
+        win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function appendMessage(text, sender) {
+        const body = document.getElementById('chatBody');
+        const msg = document.createElement('div');
+        msg.className = 'msg ' + sender;
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = text;
+
+        msg.appendChild(bubble);
+        body.appendChild(msg);
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function setTyping(show) {
+        document.getElementById('typingIndicator').style.display = show ? 'block' : 'none';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const btn = document.getElementById('sendBtn');
+        const text = input.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user');
+        input.value = '';
+        btn.disabled = true;
+        setTyping(true);
+
+        // TODO: Replace this with real backend call
+        sendToAI(text).then(response => {
+            appendMessage(response, 'ai');
+        }).catch(() => {
+            appendMessage("Sorry, I couldn't process that right now.", 'ai');
+        }).finally(() => {
+            btn.disabled = false;
+            setTyping(false);
+        });
+    }
+
+    // Placeholder: connect this to your PHP backend
+    async function sendToAI(userMessage) {
+        // Example: call your endpoint /ai_chat.php
+        // return fetch('ai_chat.php', {
+        //     method: 'POST',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify({message: userMessage})
+        // }).then(res => res.json()).then(data => data.reply);
+
+        // Temporary fake reply (for now)
+        return new Promise(resolve => {
+            setTimeout(() => {
+                if (userMessage.toLowerCase().includes('sale')) {
+                    resolve("To record a sale, go to the Sales page, select products, enter quantities, then click 'Complete Sale'.");
+                } else if (userMessage.toLowerCase().includes('product')) {
+                    resolve("To add a product, open the Products page and click 'Add Product', then fill in the details and save.");
+                } else if (userMessage.toLowerCase().includes('stock')) {
+                    resolve("You can view low stock items on the Dashboard under 'Low Stock Alerts'.");
+                } else {
+                    resolve("I’m here to guide you on using the Agrovet system—try asking about products, sales, suppliers, or reports.");
+                }
+            }, 900);
+        });
+    }
+</script>
+
+</body>
+</html>
