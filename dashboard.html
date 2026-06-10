@@ -1,174 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Agrovet Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Agrovet Dashboard with AI Assistant</title>
 
-    <style>
-        :root {
-            --primary: #1b8f5a;
-            --primary-dark: #146843;
-            --bg: #f4f6f9;
-            --card: #ffffff;
-            --text: #222;
-            --muted: #777;
-            --danger: #e74c3c;
-            --sidebar-bg: #0f172a;
-            --sidebar-hover: #1e293b;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f3f4f6;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
+    /* Dashboard Layout */
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
 
-        body { background: var(--bg); color: var(--text); }
+    .card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
 
-        .layout { display: flex; min-height: 100vh; }
+    .card h3 {
+        margin: 0;
+        font-size: 22px;
+        color: #1e3a8a;
+    }
 
-        .sidebar {
-            width: 240px;
-            background: var(--sidebar-bg);
-            color: #e5e7eb;
-            padding: 25px 18px;
-        }
+    /* AI Assistant Panel */
+    .ai-panel {
+        background: #ffffff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        max-width: 100%;
+    }
 
-        .sidebar h2 {
-            font-size: 22px;
-            margin-bottom: 25px;
-            color: #a5f3fc;
-            font-weight: 600;
-        }
+    .ai-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-        .nav-link {
-            display: block;
-            padding: 12px 14px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            color: #e5e7eb;
-            text-decoration: none;
-            font-size: 15px;
-            transition: 0.2s;
-        }
+    .ai-header img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+    }
 
-        .nav-link:hover { background: var(--sidebar-hover); }
+    .ai-header h3 {
+        margin: 0;
+        font-size: 20px;
+        color: #1e3a8a;
+    }
 
-        .main { flex: 1; padding: 25px 30px; }
+    .ai-sub {
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 10px;
+    }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-        }
+    .ai-chat-box {
+        background: #f3f4f6;
+        height: 260px;
+        overflow-y: auto;
+        padding: 10px;
+        border-radius: 10px;
+    }
 
-        .topbar-title { font-size: 24px; font-weight: 600; }
+    .msg {
+        margin: 6px 0;
+        display: flex;
+    }
 
-        .user-badge { font-size: 14px; color: var(--muted); }
+    .msg.user {
+        justify-content: flex-end;
+    }
 
-        .card {
-            background: var(--card);
-            border-radius: 10px;
-            padding: 20px 22px;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-            margin-bottom: 22px;
-        }
+    .msg.ai {
+        justify-content: flex-start;
+    }
 
-        .card-title { font-size: 18px; margin-bottom: 14px; font-weight: 600; }
+    .bubble {
+        max-width: 75%;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-        }
+    .msg.user .bubble {
+        background: #2563eb;
+        color: white;
+        border-bottom-right-radius: 2px;
+    }
 
-        .stat-box {
-            background: var(--card);
-            padding: 16px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+    .msg.ai .bubble {
+        background: #e5e7eb;
+        color: #111827;
+        border-bottom-left-radius: 2px;
+    }
 
-        .stat-label { font-size: 13px; color: var(--muted); }
+    .ai-input-area {
+        margin-top: 10px;
+        display: flex;
+        gap: 6px;
+    }
 
-        .stat-value { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .ai-input-area input {
+        flex: 1;
+        padding: 8px;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        outline: none;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
+    .ai-input-area button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+    }
 
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { background: var(--primary-dark); }
+    .voice-btn {
+        background: #10b981;
+        padding: 8px 12px;
+        border-radius: 50%;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
 
-        .btn-secondary { background: #e5e7eb; color: #111827; }
-    </style>
+    .typing {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 4px;
+        display: none;
+    }
+</style>
 </head>
 
 <body>
-<div class="layout">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <h2>Agrovet</h2>
+<div class="dashboard-container">
 
-        <a href="dashboard.html" class="nav-link">Dashboard</a>
-        <a href="products.html" class="nav-link">Products</a>
-        <a href="suppliers.html" class="nav-link">Suppliers</a>
-        <a href="customers.html" class="nav-link">Customers</a>
-        <a href="sales.html" class="nav-link">Sales</a>
-        <a href="purchases.html" class="nav-link">Purchases</a>
-        <a href="stock.html" class="nav-link">Stock History</a>
-        <a href="users.html" class="nav-link">Users</a>
-        <a href="login.html" class="nav-link">Logout</a>
-    </div>
+    <!-- Example Dashboard Cards -->
+    <div class="card"><h3>Total Products</h3><p>120</p></div>
+    <div class="card"><h3>Total Sales</h3><p>KES 45,000</p></div>
+    <div class="card"><h3>Low Stock Items</h3><p>8</p></div>
+    <div class="card"><h3>Suppliers</h3><p>12</p></div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main">
-
-        <div class="topbar">
-            <div class="topbar-title">Dashboard</div>
-            <div class="user-badge">Logged in as Admin</div>
+    <!-- AI Assistant Panel -->
+    <div class="ai-panel">
+        <div class="ai-header">
+            <img src="https://i.imgur.com/4AiXzf8.jpeg">
+            <div>
+                <h3>Agrovet AI Assistant</h3>
+                <p class="ai-sub">Ask anything about using the system</p>
+            </div>
         </div>
 
-        <div class="card">
-            <div class="card-title">Overview</div>
-
-            <div class="grid">
-                <div class="stat-box">
-                    <div class="stat-label">Total Products</div>
-                    <div class="stat-value">120</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-label">Total Suppliers</div>
-                    <div class="stat-value">18</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-label">Total Customers</div>
-                    <div class="stat-value">54</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-label">Sales Today</div>
-                    <div class="stat-value">KES 12,500</div>
+        <div class="ai-chat-box" id="aiChatBox">
+            <div class="msg ai">
+                <div class="bubble">
+                    Hello Ivy 👋, I'm your Agrovet Assistant.<br>
+                    Ask me anything about products, sales, suppliers, or reports.
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-title">Quick Links</div>
+        <div class="typing" id="typingIndicator">Assistant is typing…</div>
 
-            <a href="products.html" class="btn btn-primary">Manage Products</a>
-            <a href="sales.html" class="btn btn-primary">Record Sale</a>
-            <a href="purchases.html" class="btn btn-secondary">Record Purchase</a>
-            <a href="stock.html" class="btn btn-secondary">View Stock History</a>
+        <div class="ai-input-area">
+            <input type="text" id="aiInput" placeholder="Type your question..." onkeydown="if(event.key==='Enter'){sendAI();}">
+            <button onclick="sendAI()">Send</button>
+            <button class="voice-btn" onclick="startVoice()">🎤</button>
         </div>
-
     </div>
+
 </div>
+
+<script>
+function appendAIMessage(text, sender) {
+    const box = document.getElementById('aiChatBox');
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + sender;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+
+    msg.appendChild(bubble);
+    box.appendChild(msg);
+    box.scrollTop = box.scrollHeight;
+}
+
+function sendAI() {
+    const input = document.getElementById('aiInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendAIMessage(text, 'user');
+    input.value = '';
+
+    document.getElementById('typingIndicator').style.display = 'block';
+
+    setTimeout(() => {
+        let reply = "";
+
+        if (text.toLowerCase().includes("product")) {
+            reply = "To add a product, go to Products → Add Product, fill the form, and save.";
+        } else if (text.toLowerCase().includes("sale")) {
+            reply = "To record a sale, open the Sales page, select items, and click Complete Sale.";
+        } else if (text.toLowerCase().includes("supplier")) {
+            reply = "You can add suppliers under Suppliers → Add Supplier.";
+        } else if (text.toLowerCase().includes("report")) {
+            reply = "Reports are available under the Reports menu. You can view daily and monthly sales.";
+        } else {
+            reply = "I'm here to help! Ask me about products, sales, suppliers, or reports.";
+        }
+
+        appendAIMessage(reply, 'ai');
+        document.getElementById('typingIndicator').style.display = 'none';
+    }, 900);
+}
+
+/* Voice Input */
+function startVoice() {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        document.getElementById('aiInput').value = event.results[0][0].transcript;
+    };
+}
+</script>
+
 </body>
 </html>
